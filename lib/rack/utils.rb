@@ -231,6 +231,8 @@ module Rack
         # 用=分割cookie，得到key和value对
         key, value = cookie.split('=', 2)
         # 反转义URI编码的value,并把key和vaule放在cookies中
+        # 一开始反转义是会连key也反转义的，这样会导致subdomain可以设置__Host-,会导致vuln,
+        # 后来只反转义value。
         cookies[key] = (unescape(value) rescue value) unless cookies.key?(key)
       end
     end
