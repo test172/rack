@@ -207,14 +207,25 @@ module Rack
       parse_cookies_header env[HTTP_COOKIE]
     end
 
+    # 解析cookies头部
     def parse_cookies_header(header)
       # According to RFC 6265:
       # The syntax for cookie headers only supports semicolons
       # User Agent -> Server ==
       # Cookie: SID=31d4d96e407aad42; lang=en-US
+      
+      # 根据RFC 6265
+      # cookie的头部语法只支持;
+      # User Agent -> Server ==
+      # Cookie: SID=31d4d96e407aad42; lang=en-US
+      
+      # 如果头部是空的，就返回
       return {} unless header
+      # 根据;分割头部
       header.split(/[;] */n).each_with_object({}) do |cookie, cookies|
+        # 如果cookie是空的，跳到下一个
         next if cookie.empty?
+        # 用=分割cookie，得到key和value对
         key, value = cookie.split('=', 2)
         cookies[key] = (unescape(value) rescue value) unless cookies.key?(key)
       end
