@@ -50,7 +50,10 @@ module Rack
 
     # Unescapes a URI escaped string with +encoding+. +encoding+ will be the
     # target encoding of the string returned, and it defaults to UTF-8
+    
+    # 反转义URI编码的字符串
     def unescape(s, encoding = Encoding::UTF_8)
+      # 解码URI编码的字符串
       URI.decode_www_form_component(s, encoding)
     end
 
@@ -227,6 +230,7 @@ module Rack
         next if cookie.empty?
         # 用=分割cookie，得到key和value对
         key, value = cookie.split('=', 2)
+        # 反转义URI编码的value,并把key和vaule放在cookies中
         cookies[key] = (unescape(value) rescue value) unless cookies.key?(key)
       end
     end
